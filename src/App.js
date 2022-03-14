@@ -13,8 +13,6 @@ function App() {
     {left:90,top:70},
   ])
 
-
-
   useEffect(()=>{
     tempMoveRef.current = setTimeout(move,50)
     document.onkeyup = handleArrowKeys
@@ -38,13 +36,16 @@ function App() {
     if(tempMoveRef.current) {
       clearTimeout(tempMoveRef)
     }
+
     if(directions[directionRef.current]) {
       let newLeft = positions[0].left
       let newTop = positions[0].top
+
       const newPositions = positions.map((position,index)=>{
         if(index===0) {
           return {left: position.left + directions[directionRef.current].left, top: position.top + directions[directionRef.current].top}
         }
+
         let tempLeft = position.left
         let tempTop = position.top
         const newPosition = {left: newLeft, top: newTop}
@@ -52,8 +53,10 @@ function App() {
         newTop = tempTop
         return newPosition
       })
+
       setPositions(newPositions)
     }
+
   }
 
   const handleArrowKeys = (e)=>{
@@ -62,6 +65,7 @@ function App() {
       move()
     }
   }
+  
   return (
     <div className="App">
       <Snake 
