@@ -26,10 +26,10 @@ function App() {
   },[positions])
 
   const directions = {
-    ArrowRight: {left:sizeAndPace, top:0}, 
-    ArrowLeft:{left:-sizeAndPace, top:0},
-    ArrowUp:{left:0, top:-sizeAndPace},
-    ArrowDown:{left:0, top:sizeAndPace},
+    ArrowRight: {left:sizeAndPace, top:0, opposite: 'ArrowLeft'}, 
+    ArrowLeft:{left:-sizeAndPace, top:0, opposite: 'ArrowRight'},
+    ArrowUp:{left:0, top:-sizeAndPace, opposite: 'ArrowDown'},
+    ArrowDown:{left:0, top:sizeAndPace, opposite: 'ArrowUp'},
   }
 
   const directionRef = useRef('ArrowRight')
@@ -63,8 +63,11 @@ function App() {
   }
 
   const handleArrowKeys = (e)=>{
-    if((e.key || e.code) !== directionRef.current) {
-      directionRef.current = e.code || e.key
+    const typed = e.key || e.code
+    if(typed !== directionRef.current && 
+      typed !== directions[directionRef.current].opposite) 
+    {
+      directionRef.current = typed
       move()
     }
   }
