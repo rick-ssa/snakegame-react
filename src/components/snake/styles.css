@@ -1,0 +1,9 @@
+.snake_head {
+  position: absolute;
+  background-color: yellowgreen;
+}
+
+.snake_body {
+  position: absolute;
+  background-color: blue;
+}
