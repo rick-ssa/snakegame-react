@@ -64,6 +64,9 @@ function App() {
 
   const handleArrowKeys = (e)=>{
     const typed = e.key || e.code
+
+    if(!directions[typed]) return
+    
     if(typed !== directionRef.current && 
       typed !== directions[directionRef.current].opposite) 
     {
