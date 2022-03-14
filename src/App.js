@@ -11,6 +11,9 @@ function App() {
     {left:90,top:90},
     {left:90,top:80},
     {left:90,top:70},
+    {left:80,top:70},
+    {left:70,top:70},
+    {left:60,top:70},
   ])
 
   useEffect(()=>{
