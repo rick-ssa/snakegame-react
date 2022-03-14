@@ -43,7 +43,7 @@ function App() {
       let newTop = positions[0].top
       const newPositions = positions.map((position,index)=>{
         if(index===0) {
-          return {left: position.left + directions[directionRef.current].left, top: position.top + + directions[directionRef.current].top}
+          return {left: position.left + directions[directionRef.current].left, top: position.top + directions[directionRef.current].top}
         }
         let tempLeft = position.left
         let tempTop = position.top
