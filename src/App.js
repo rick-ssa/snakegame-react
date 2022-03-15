@@ -18,10 +18,10 @@ function App() {
 
   useEffect(()=>{
     tempMoveRef.current = setTimeout(move,50)
-    document.onkeyup = handleArrowKeys
+    document.onkeydown = handleArrowKeys
     return ()=>{
       clearTimeout(tempMoveRef.current)
-      document.onkeyup = null
+      document.onkeydown = null
     }
   },[positions])
 
