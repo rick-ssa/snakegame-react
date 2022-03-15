@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
+import Food from './components/food/Food';
 import Snake from './components/snake/Snake';
 
 function App() {
@@ -77,6 +78,14 @@ function App() {
   
   return (
     <div className="App">
+      <Food 
+        size = {sizeAndPace}
+        backgroundColor = 'green'
+        position={{left: 150, top: 150}}
+        visible
+        isRounded
+      />
+
       <Snake 
         positions={positions}
         sizePiece={sizeAndPace}
