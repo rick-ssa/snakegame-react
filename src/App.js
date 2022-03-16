@@ -8,6 +8,7 @@ function App() {
   const [foodVsibility, setFoodVisibility] = useState(false)
   const [foodPosition, setFoodPosition] = useState({left: 150, top: 150})
   const [foodColor, setFoodColor] = useState('yellow')
+  const [isRounded, setIsRounded] = useState(false)
 
   const [positions, setPositions] = useState([
     {left:100, top: 100},
@@ -51,6 +52,7 @@ function App() {
     const time = (Math.round(Math.random() * 10) + 20) * 1000
     setFoodVisibility(true)
     timeFoodVisibleRef.current = setTimeout(()=>{
+      setIsRounded(prev=>!prev)
       changeFoodColor(colors)
       changeFoodPosition(1200,600)
       setFoodVisibility(false)
@@ -116,7 +118,7 @@ function App() {
         backgroundColor = {foodColor}
         position={foodPosition}
         visible = {foodVsibility}
-        isRounded
+        isRounded = {isRounded}
       />
 
       <Snake 
