@@ -6,6 +6,7 @@ import Snake from './components/snake/Snake';
 function App() {
   const [sizeAndPace, setSizeAndPace] = useState(10)
   const [foodVsibility, setFoodVisibility] = useState(false)
+  const [foodPosition, setFoodPosition] = useState({left: 150, top: 150})
 
   const [positions, setPositions] = useState([
     {left:100, top: 100},
@@ -48,8 +49,16 @@ function App() {
     const time = (Math.round(Math.random() * 10) + 20) * 1000
     setFoodVisibility(true)
     timeFoodVisibleRef.current = setTimeout(()=>{
+      changeFoodPosition(1200,600)
       setFoodVisibility(false)
     },time)
+  }
+
+  const changeFoodPosition = (maxLeft, maxTop) => {
+    const left = Math.round(Math.random() * maxLeft)
+    const top = Math.round(Math.random() * maxTop)
+
+    setFoodPosition({left, top})
   }
 
   const move = () => {
@@ -97,7 +106,7 @@ function App() {
       <Food 
         size = {sizeAndPace}
         backgroundColor = 'green'
-        position={{left: 150, top: 150}}
+        position={foodPosition}
         visible = {foodVsibility}
         isRounded
       />
