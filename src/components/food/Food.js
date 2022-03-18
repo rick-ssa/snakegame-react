@@ -1,4 +1,5 @@
 import './styles.css'
+import { memo } from 'react'
 
 const Food = ({
     position,
@@ -7,7 +8,8 @@ const Food = ({
     visible,
     isRounded
 })=> {
-    
+
+    const borderRadius = isRounded ? '50%' : '0'
     return (
         <div 
             className="food"
@@ -18,10 +20,10 @@ const Food = ({
                 width: `${size}px`,
                 height: `${size}px`,
                 opacity: visible ? 1 : 0,
-                borderRadius: isRounded ? '50%' : 'none'
+                borderRadius
             }}
         />
     )
 }
 
-export default Food
+export default memo(Food)
