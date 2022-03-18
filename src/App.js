@@ -5,10 +5,12 @@ import Snake from './components/snake/Snake';
 
 function App() {
   const [sizeAndPace, setSizeAndPace] = useState(10)
-  const [foodVsibility, setFoodVisibility] = useState(false)
-  const [foodPosition, setFoodPosition] = useState({left: 150, top: 150})
-  const [foodColor, setFoodColor] = useState('yellow')
-  const [isRounded, setIsRounded] = useState(false)
+  const [food, setFood] = useState({
+    position: {left: 150, top: 150},
+    visiblility: false,
+    color: 'yellow',
+    isRounded: false
+  })
 
   const [positions, setPositions] = useState([
     {left:100, top: 100},
@@ -31,10 +33,10 @@ function App() {
   },[positions])
 
   useEffect(()=> {
-    if(!foodVsibility) {
+    if(!food.visiblility) {
       timeFoodVisibleRef.current = setTimeout(makeFoodVisible,1000)
     }
-  },[foodVsibility])
+  },[food])
 
   const directions = {
     ArrowRight: {left:sizeAndPace, top:0, opposite: 'ArrowLeft'}, 
@@ -46,16 +48,22 @@ function App() {
   const directionRef = useRef('ArrowRight')
   const tempMoveRef = useRef(null)
   const timeFoodVisibleRef = useRef(null)
-  const colors = ['yellow', 'red', 'green', 'blue', 'white']
+  const isRoudedRef = useRef(false)
 
   const makeFoodVisible = () => {
-    const time = (Math.round(Math.random() * 10) + 20) * 1000
-    setFoodVisibility(true)
+    const time = (Math.round(Math.random() * 3) + 5) * 1000
+    setFood(prev=>({...prev,position: {...prev.position}, visiblility: true}))
     timeFoodVisibleRef.current = setTimeout(()=>{
-      setIsRounded(prev=>!prev)
-      changeFoodColor(colors)
-      changeFoodPosition(1200,600)
-      setFoodVisibility(false)
+      const newFood = {
+        color: changeFoodColor(),
+        position: changeFoodPosition(1200,600), 
+        isRounded: !isRoudedRef.current,
+        visiblility: false
+      }
+
+      isRoudedRef.current = !isRoudedRef.current
+      
+      setFood(newFood)
     },time)
   }
 
@@ -63,12 +71,14 @@ function App() {
     const left = Math.round(Math.random() * maxLeft)
     const top = Math.round(Math.random() * maxTop)
 
-    setFoodPosition({left, top})
+    return {left, top}
   }
 
-  const changeFoodColor = (colors) => {
-    const color = colors[Math.round(Math.random() * (colors.length - 1))]
-    setFoodColor(color)
+  const changeFoodColor = () => {
+
+    const colors = ['yellow', 'red', 'green', 'blue', 'white']  
+    return colors[Math.round(Math.random() * (colors.length - 1))]
+
   }
 
   const move = () => {
@@ -115,10 +125,10 @@ function App() {
     <div className="App">
       <Food 
         size = {sizeAndPace}
-        backgroundColor = {foodColor}
-        position={foodPosition}
-        visible = {foodVsibility}
-        isRounded = {isRounded}
+        backgroundColor = {food.color}
+        position={food.position}
+        visible = {food.visiblility}
+        isRounded = {food.isRounded}
       />
 
       <Snake 
