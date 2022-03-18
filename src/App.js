@@ -56,7 +56,7 @@ function App() {
     timeFoodVisibleRef.current = setTimeout(()=>{
       const newFood = {
         color: changeFoodColor(),
-        position: changeFoodPosition(1200,600), 
+        position: changeFoodPosition(1200,600, sizeAndPace), 
         isRounded: !isRoudedRef.current,
         visiblility: false
       }
@@ -67,9 +67,11 @@ function App() {
     },time)
   }
 
-  const changeFoodPosition = (maxLeft, maxTop) => {
-    const left = Math.round(Math.random() * maxLeft)
-    const top = Math.round(Math.random() * maxTop)
+  const changeFoodPosition = (maxLeft, maxTop, step) => {
+    const stepsLeft = Math.floor(maxLeft / step)
+    const stepsTop = Math.floor(maxTop / step)
+    const left = Math.round(Math.random() * stepsLeft) * step
+    const top = Math.round(Math.random() * stepsTop) * step
 
     return {left, top}
   }
