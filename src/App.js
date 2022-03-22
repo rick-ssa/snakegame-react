@@ -27,6 +27,16 @@ function App() {
     tempMoveRef.current = setTimeout(move,50)
     document.onkeydown = handleArrowKeys
     
+    if(foodHasBeenEaten()) {
+      clearTimeout(timeFoodVisibleRef.current)
+      setFood({
+        position: {...food.position},
+        visiblility: false,
+        color: food.color,
+        isRounded: food.isRounded
+      })
+    }
+
     return ()=>{
       clearTimeout(tempMoveRef.current)
       document.onkeydown = null
@@ -41,7 +51,11 @@ function App() {
 
   const foodHasBeenEaten = useCallback(
     ()=>{
-      return positions[0].left === food.position.left && positions[0].top === food.position.top
+      return (
+        positions[0].left === food.position.left && 
+        positions[0].top === food.position.top &&
+        food.visiblility
+      )
     },
     [positions]
   )
@@ -60,16 +74,21 @@ function App() {
 
   const makeFoodVisible = () => {
     const time = (Math.round(Math.random() * 3) + 5) * 1000
-    setFood(prev=>({...prev,position: {...prev.position}, visiblility: true}))
+    setFood({
+      color: changeFoodColor(),
+      position: changeFoodPosition(1200,600, sizeAndPace), 
+      isRounded: !isRoudedRef.current,
+      visiblility: true
+    })
+
+    isRoudedRef.current = !isRoudedRef.current
+
     timeFoodVisibleRef.current = setTimeout(()=>{
       const newFood = {
-        color: changeFoodColor(),
-        position: changeFoodPosition(1200,600, sizeAndPace), 
-        isRounded: !isRoudedRef.current,
+        ...food,
+        position: {...food.position}, 
         visiblility: false
       }
-
-      isRoudedRef.current = !isRoudedRef.current
       
       setFood(newFood)
     },time)
