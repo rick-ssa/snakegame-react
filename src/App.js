@@ -35,6 +35,7 @@ function App() {
         color: food.color,
         isRounded: food.isRounded
       })
+      growSnake()
     }
 
     return ()=>{
@@ -59,6 +60,10 @@ function App() {
     },
     [positions]
   )
+
+  const growSnake = ()=> {
+    setPositions(prev=>([...prev,{...prev[prev.length - 1]}]))
+  }
 
   const directions = {
     ArrowRight: {left:sizeAndPace, top:0, opposite: 'ArrowLeft'}, 
