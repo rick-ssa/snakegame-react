@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import './App.css';
 import Food from './components/food/Food';
 import Snake from './components/snake/Snake';
@@ -26,6 +26,7 @@ function App() {
   useEffect(()=>{
     tempMoveRef.current = setTimeout(move,50)
     document.onkeydown = handleArrowKeys
+    
     return ()=>{
       clearTimeout(tempMoveRef.current)
       document.onkeydown = null
@@ -37,6 +38,13 @@ function App() {
       timeFoodVisibleRef.current = setTimeout(makeFoodVisible,1000)
     }
   },[food])
+
+  const foodHasBeenEaten = useCallback(
+    ()=>{
+      return positions[0].left === food.position.left && positions[0].top === food.position.top
+    },
+    [positions]
+  )
 
   const directions = {
     ArrowRight: {left:sizeAndPace, top:0, opposite: 'ArrowLeft'}, 
