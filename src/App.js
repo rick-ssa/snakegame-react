@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import './App.css';
 import Food from './components/food/Food';
 import Snake from './components/snake/Snake';
@@ -26,6 +26,17 @@ function App() {
   useEffect(()=>{
     tempMoveRef.current = setTimeout(move,50)
     document.onkeydown = handleArrowKeys
+    
+    if(foodHasBeenEaten()) {
+      clearTimeout(timeFoodVisibleRef.current)
+      setFood({
+        position: {...food.position},
+        visiblility: false,
+        color: food.color,
+        isRounded: food.isRounded
+      })
+    }
+
     return ()=>{
       clearTimeout(tempMoveRef.current)
       document.onkeydown = null
@@ -37,6 +48,17 @@ function App() {
       timeFoodVisibleRef.current = setTimeout(makeFoodVisible,1000)
     }
   },[food])
+
+  const foodHasBeenEaten = useCallback(
+    ()=>{
+      return (
+        positions[0].left === food.position.left && 
+        positions[0].top === food.position.top &&
+        food.visiblility
+      )
+    },
+    [positions]
+  )
 
   const directions = {
     ArrowRight: {left:sizeAndPace, top:0, opposite: 'ArrowLeft'}, 
@@ -52,16 +74,21 @@ function App() {
 
   const makeFoodVisible = () => {
     const time = (Math.round(Math.random() * 3) + 5) * 1000
-    setFood(prev=>({...prev,position: {...prev.position}, visiblility: true}))
+    setFood({
+      color: changeFoodColor(),
+      position: changeFoodPosition(1200,600, sizeAndPace), 
+      isRounded: !isRoudedRef.current,
+      visiblility: true
+    })
+
+    isRoudedRef.current = !isRoudedRef.current
+
     timeFoodVisibleRef.current = setTimeout(()=>{
       const newFood = {
-        color: changeFoodColor(),
-        position: changeFoodPosition(1200,600, sizeAndPace), 
-        isRounded: !isRoudedRef.current,
+        ...food,
+        position: {...food.position}, 
         visiblility: false
       }
-
-      isRoudedRef.current = !isRoudedRef.current
       
       setFood(newFood)
     },time)
