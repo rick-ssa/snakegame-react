@@ -28,14 +28,7 @@ function App() {
     document.onkeydown = handleArrowKeys
     
     if(foodHasBeenEaten()) {
-      clearTimeout(timeFoodVisibleRef.current)
-      setFood({
-        position: {...food.position},
-        visiblility: false,
-        color: food.color,
-        isRounded: food.isRounded
-      })
-      growSnake()
+      handleSnakeEaten()
     }
 
     return ()=>{
@@ -60,6 +53,17 @@ function App() {
     },
     [positions]
   )
+
+  const handleSnakeEaten = () => {
+    clearTimeout(timeFoodVisibleRef.current)
+    setFood({
+      position: {...food.position},
+      visiblility: false,
+      color: food.color,
+      isRounded: food.isRounded
+    })
+    growSnake()
+  }
 
   const growSnake = ()=> {
     setPositions(prev=>([...prev,{...prev[prev.length - 1]}]))
