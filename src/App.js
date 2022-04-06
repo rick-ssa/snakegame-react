@@ -32,10 +32,16 @@ function App() {
     }
 
     return ()=>{
-      clearTimeout(tempMoveRef.current)
+      pause()
       document.onkeydown = null
     }
   },[positions])
+
+  useEffect(()=>{
+    window.addEventListener('blur', pause)
+
+    return ()=>{window.removeEventListener('blur', pause)}
+  },[])
 
   useEffect(()=> {
     if(!food.visiblility) {
@@ -144,6 +150,10 @@ function App() {
       setPositions(newPositions)
     }
 
+  }
+
+  const pause = () => {
+    clearTimeout(tempMoveRef.current)
   }
 
   const handleArrowKeys = (e)=>{
